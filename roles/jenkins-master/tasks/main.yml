@@ -1,0 +1,16 @@
+---
+- name: Add Jenkins redhat stable repo
+  command: wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
+
+- name: Add Jenkins repo key
+  command: rpm --import http://pkg.jenkins-ci.org/redhat-stable/jenkins-ci.org.key
+
+- name: Install Jenkins
+  yum: name={{item}} state=present
+  with_items:
+   - java-1.7.0-openjdk
+   - jenkins
+
+- name: Enable Jenkins to be started at boot
+  service: name=jenkins enabled=yes state=started
+
